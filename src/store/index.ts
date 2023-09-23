@@ -1,10 +1,12 @@
-import {configureStore} from '@reduxjs/toolkit';
-import userReducer from '../reducers/userSlice';
+import {configureStore, combineReducers} from '@reduxjs/toolkit';
+import exerciseReducer from '../reducers/exerciseSlice';
+
+const rootReducer = combineReducers({
+  exercise: exerciseReducer,
+});
 
 const store = configureStore({
-  reducer: {
-    user: userReducer,
-  },
+  reducer: rootReducer,
 });
 
 export type RootState = ReturnType<typeof store.getState>;
