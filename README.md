@@ -3,8 +3,8 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 # TECH STACK
 
 # React Native
+# TypeScript
 # For Now data of 2 dummy exercises stored in constant folder.
-# I can make backend on firestore too.
 
 
 
