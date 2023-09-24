@@ -6,8 +6,8 @@ const initialState: exerciseState = {
   exercises: exercises,
   currentExercise: exercises[0],
   currentOption: undefined,
+  currentIndex: 0,
   error: null,
-  answer: undefined,
 };
 
 const exerciseSlice = createSlice({
@@ -20,12 +20,22 @@ const exerciseSlice = createSlice({
     setCurrentOption: (state, action: PayloadAction<optionType>) => {
       state.currentOption = action.payload;
     },
-    setAnswer: (state, action: PayloadAction<boolean>) => {
-      state.answer = action.payload;
+    setNextExercise: state => {
+      if (state.currentIndex + 1 < state.exercises.length) {
+        //reset to next index
+        state.currentIndex = state.currentIndex + 1;
+        state.currentExercise = exercises[state.currentIndex];
+        state.currentOption = undefined;
+      } else {
+        //reset to start index
+        state.currentIndex = 0;
+        state.currentExercise = exercises[0];
+        state.currentOption = undefined;
+      }
     },
   },
 });
 
-export const {setCurrentExercise, setCurrentOption, setAnswer} =
+export const {setCurrentExercise, setCurrentOption, setNextExercise} =
   exerciseSlice.actions;
 export default exerciseSlice.reducer;

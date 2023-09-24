@@ -1,25 +1,25 @@
 import {StyleSheet, Text, TouchableOpacity, ViewStyle} from 'react-native';
 import React from 'react';
 import {Layout, Colors, Fonts} from '../theme';
-
+import {caseType} from '../types';
 type ButtonProps = {
   text: string;
   onPress?: () => void;
   customStyle: ViewStyle;
-  answer?: boolean;
+  currentCase: caseType;
 };
 
 const Button = ({
   text = 'CONTINUE',
   onPress,
   customStyle,
-  answer,
+  currentCase,
 }: ButtonProps): JSX.Element => {
   const getTextColor = () => {
-    switch (answer) {
-      case true:
+    switch (currentCase) {
+      case caseType.RIGHT_ANSWER_CASE:
         return Colors.Primary.SUCCESS;
-      case false:
+      case caseType.WRONG_ANSWER_CASE:
         return Colors.Primary.FAILURE;
       default:
         return Colors.Primary.WHITE;

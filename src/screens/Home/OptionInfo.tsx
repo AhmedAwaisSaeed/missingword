@@ -1,10 +1,9 @@
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {Colors, Layout, Fonts} from '../../theme';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store';
 import {setCurrentOption} from '../../reducers/exerciseSlice';
-import {Sentence} from '../../components';
 import {optionType} from '../../types';
 type optionProps = {
   option: optionType;

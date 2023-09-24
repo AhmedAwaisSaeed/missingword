@@ -1,7 +1,7 @@
 import {StyleSheet, View, ViewStyle, TextStyle, Text} from 'react-native';
 import React from 'react';
 import {Layout, Fonts, Colors} from '../theme';
-import {wordType, optionType} from '../types';
+import {wordType, optionType, caseType} from '../types';
 import {Underline, Option} from '../components';
 type sentenceProps = {
   style: ViewStyle;
@@ -9,7 +9,8 @@ type sentenceProps = {
   text?: string;
   words?: wordType[];
   currentOption?: optionType | undefined;
-  answer?: boolean;
+
+  currentCase: caseType;
 };
 
 const Sentence = ({
@@ -18,15 +19,15 @@ const Sentence = ({
   text,
   words = [],
   currentOption,
-  answer,
+  currentCase,
 }: sentenceProps): JSX.Element => {
   console.log('sentence is ====');
 
   const getMissingWordBackGroundColor = () => {
-    switch (answer) {
-      case true:
+    switch (currentCase) {
+      case caseType.RIGHT_ANSWER_CASE:
         return Colors.Primary.SUCCESS;
-      case false:
+      case caseType.WRONG_ANSWER_CASE:
         return Colors.Primary.FAILURE;
       default:
         return Colors.Primary.WHITE;
@@ -34,10 +35,10 @@ const Sentence = ({
   };
 
   const getMissingWordColor = () => {
-    switch (answer) {
-      case true:
+    switch (currentCase) {
+      case caseType.RIGHT_ANSWER_CASE:
         return Colors.Primary.WHITE;
-      case false:
+      case caseType.WRONG_ANSWER_CASE:
         return Colors.Primary.WHITE;
       default:
         return Colors.Primary.BLACK;

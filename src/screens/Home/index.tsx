@@ -1,13 +1,16 @@
-import {StyleSheet, View, Alert, Text} from 'react-native';
+import {StyleSheet, View, Alert, Text, StatusBar} from 'react-native';
 import React, {useState} from 'react';
 import {Colors, Layout, Fonts} from '../../theme';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store';
-// import {setAnswer} from '../../reducers/exerciseSlice';
+import {getSpecificCase} from '../../utils';
+import {caseType} from '../../types';
 import {Sentence, Button} from '../../components';
 import OptionList from './OptionList';
+import {setNextExercise} from '../../reducers/exerciseSlice';
 const Home = (): JSX.Element => {
-  const {exercises, currentExercise, currentOption} = useSelector(
+  const dispatch = useDispatch();
+  const {currentExercise, currentOption} = useSelector(
     (state: RootState) => state.exercise,
   );
 
@@ -15,15 +18,21 @@ const Home = (): JSX.Element => {
     currentExercise;
 
   const [answer, setAnswer] = useState<boolean | undefined>(undefined);
-
-  console.log('exercise===', exercises);
-  console.log('words===', actualLanguage.sentence.words);
-  const isOptionSelected = currentOption ? true : false;
+  const currentCase = getSpecificCase(answer, currentOption);
 
   const onPressCheckAnswer = () => {
     if (!currentOption) {
       Alert.alert('Please select any option first');
     } else {
+      if (
+        currentCase === caseType.RIGHT_ANSWER_CASE ||
+        currentCase === caseType.WRONG_ANSWER_CASE
+      ) {
+        // dispatch next Exercise
+        setAnswer(undefined);
+        dispatch(setNextExercise());
+        return;
+      }
       if (currentOption.id === correctOption.id) {
         setAnswer(true);
       } else {
@@ -33,25 +42,23 @@ const Home = (): JSX.Element => {
   };
 
   const getButtonText = () => {
-    switch (answer) {
-      case true:
+    switch (currentCase) {
+      case caseType.RIGHT_ANSWER_CASE:
         return 'CONTINUE';
-      case false:
+      case caseType.WRONG_ANSWER_CASE:
         return 'CONTINUE';
+      case caseType.OPTION_SELECTED_CASE:
+        return 'CHECK ANSWER';
       default:
-        if (!isOptionSelected) {
-          return 'CONTINUE';
-        } else {
-          return 'CHECK ANSWER';
-        }
+        return 'CONTINUE';
     }
   };
 
   const getButtonSectionBackgroundColor = () => {
-    switch (answer) {
-      case true:
+    switch (currentCase) {
+      case caseType.RIGHT_ANSWER_CASE:
         return Colors.Primary.SUCCESS;
-      case false:
+      case caseType.WRONG_ANSWER_CASE:
         return Colors.Primary.FAILURE;
       default:
         return Colors.Primary.REGULARONE;
@@ -59,28 +66,38 @@ const Home = (): JSX.Element => {
   };
 
   const getButtonBackgroundColor = () => {
-    switch (answer) {
-      case true:
+    switch (currentCase) {
+      case caseType.RIGHT_ANSWER_CASE:
         return Colors.Primary.WHITE;
-      case false:
+      case caseType.WRONG_ANSWER_CASE:
         return Colors.Primary.WHITE;
+      case caseType.OPTION_SELECTED_CASE:
+        return Colors.Primary.SUCCESS;
       default:
-        if (isOptionSelected) {
-          return Colors.Primary.SUCCESS;
-        } else {
-          return Colors.Primary.REGULARTWO;
-        }
+        return Colors.Primary.REGULARTWO;
+    }
+  };
+
+  const getButtonSectionText = () => {
+    switch (currentCase) {
+      case caseType.RIGHT_ANSWER_CASE:
+        return 'Great Job';
+      case caseType.WRONG_ANSWER_CASE:
+        return 'Answer: ' + correctOption.option;
+      default:
+        return '';
     }
   };
 
   return (
     <View style={styles.container}>
+      <StatusBar hidden={true} />
       <View style={styles.firstSectionContainer}>
         <Sentence
           text={'Fill in the missing word'}
           style={styles.sentenceContainer}
           textStyle={styles.labelTextStyle}
-          answer={answer}
+          currentCase={currentCase}
         />
 
         <Sentence
@@ -88,7 +105,7 @@ const Home = (): JSX.Element => {
           style={styles.sentenceContainer}
           textStyle={styles.completeSentenceTextStyle}
           currentOption={currentOption}
-          answer={answer}
+          currentCase={currentCase}
         />
 
         <Sentence
@@ -96,7 +113,7 @@ const Home = (): JSX.Element => {
           style={styles.sentenceContainer}
           textStyle={styles.completeSentenceTextStyle}
           currentOption={currentOption}
-          answer={answer}
+          currentCase={currentCase}
         />
       </View>
       <View style={styles.secondSectionContainer}>
@@ -110,20 +127,14 @@ const Home = (): JSX.Element => {
             backgroundColor: getButtonSectionBackgroundColor(),
           },
         ]}>
-        {answer === true ? (
-          <Text style={styles.answerStyle}>Great Job</Text>
-        ) : answer !== undefined ? (
-          <Text style={styles.answerStyle}>Answer: {correctOption.option}</Text>
-        ) : (
-          <Text />
-        )}
+        <Text style={styles.answerStyle}>{getButtonSectionText()}</Text>
         <Button
           text={getButtonText()}
           customStyle={{
             backgroundColor: getButtonBackgroundColor(),
           }}
           onPress={onPressCheckAnswer}
-          answer={answer}
+          currentCase={currentCase}
         />
       </View>
     </View>
@@ -149,7 +160,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     marginVertical: Layout.SV_10,
-    // backgroundColor: 'red',
   },
   labelTextStyle: {
     fontSize: Layout.FSV_10,
@@ -165,12 +175,11 @@ const styles = StyleSheet.create({
   secondSectionContainer: {
     flex: 1,
     marginTop: Layout.SV_50,
-    // backgroundColor: 'red',
+
     alignItems: 'center',
   },
   buttonSection: {
     flex: 0.3,
-    // justifyContent: 'center',
     borderRadius: Layout.SV_10,
     backgroundColor: 'orange',
   },

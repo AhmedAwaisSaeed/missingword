@@ -35,7 +35,6 @@ export interface exerciseState {
   exercises: exerciseType[];
   currentExercise: exerciseType;
   currentOption: optionType | undefined;
-  answer?: boolean;
-  currentCase: caseType;
+  currentIndex: number;
   error: null | string;
 }

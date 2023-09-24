@@ -1,10 +1,6 @@
-import {StyleSheet, View, FlatList} from 'react-native';
-import React, {useState} from 'react';
-import {Colors, Layout, Fonts} from '../../theme';
-import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../../store';
-import {setCurrentExercise} from '../../reducers/exerciseSlice';
-import {Sentence} from '../../components';
+import {StyleSheet, FlatList} from 'react-native';
+import React from 'react';
+
 import {optionType} from '../../types';
 import OptionInfo from './OptionInfo';
 type optionProps = {
@@ -26,10 +22,9 @@ const OptionList = ({options, answer}: optionProps): JSX.Element => {
       data={options}
       renderItem={_renderOption}
       keyExtractor={item => item.id.toString()}
+      extraData={answer}
     />
   );
 };
 
 export default OptionList;
-
-const styles = StyleSheet.create({});
