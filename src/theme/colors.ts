@@ -1,8 +1,13 @@
 export default {
   Primary: {
     REGULAR: '#A8C74C',
-    REGULARTWO: '#EAF1D4',
+    REGULARTWO: '#6591A4',
     REGULARTHREE: '#5A3DB4',
+    REGULARONE: '#3E6D81',
+    SUCCESS: '#44E9E8',
+    FAILURE: '#FD7D8B',
+    DISABLE: '#A1B5BF',
+    DISABLETEXT: '#6F8898',
 
     TRANSPARENT: 'rgba(255, 255, 255, 0)',
 

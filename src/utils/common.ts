@@ -1,29 +1,23 @@
 import {Platform} from 'react-native';
 export const IS_ANDROID = Platform.OS === 'android';
-import {record, userType} from '../types';
+import {caseType, optionType} from '../types';
 
-const findUser = (users: record, searchedUser: string) => {
-  let foundUser = null;
-  for (const key in users) {
-    if (users.hasOwnProperty(key)) {
-      const obj = users[key];
-
-      if (obj.name?.toLowerCase() === searchedUser?.toLowerCase()) {
-        foundUser = obj;
-        break;
-      }
-    }
+const getSpecificCase = (
+  answer: boolean | undefined,
+  currentOption: optionType | undefined,
+) => {
+  if (currentOption && answer) {
+    //true answer case
+    return caseType.RIGHT_ANSWER_CASE;
+  } else if (currentOption && answer === false) {
+    // false answer case
+    return caseType.WRONG_ANSWER_CASE;
+  } else if (answer === undefined && currentOption) {
+    // option selected but not checking answer
+    return caseType.OPTION_SELECTED_CASE;
+  } else {
+    return caseType.DEFAULT_CASE;
   }
-
-  return foundUser;
 };
 
-const convertObjectToSortedArray = (users: record) => {
-  return Object.values(users).sort((a, b) => b.bananas - a.bananas);
-};
-
-const TopTenUsers = (rankedUsers: userType[]) => {
-  return rankedUsers.slice(0, 10);
-};
-
-export {findUser, convertObjectToSortedArray, TopTenUsers};
+export {getSpecificCase};
