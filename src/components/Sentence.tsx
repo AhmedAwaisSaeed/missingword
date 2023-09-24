@@ -21,8 +21,6 @@ const Sentence = ({
   currentOption,
   currentCase,
 }: sentenceProps): JSX.Element => {
-  console.log('sentence is ====');
-
   const getMissingWordBackGroundColor = () => {
     switch (currentCase) {
       case caseType.RIGHT_ANSWER_CASE:

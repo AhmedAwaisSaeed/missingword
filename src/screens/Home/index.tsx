@@ -149,7 +149,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.Primary.REGULARONE,
   },
   firstSectionContainer: {
-    flex: 0.2,
     paddingHorizontal: Layout.SV_10,
     backgroundColor: Colors.Primary.REGULARONE,
     paddingTop: Layout.SV_70,
@@ -174,14 +173,12 @@ const styles = StyleSheet.create({
 
   secondSectionContainer: {
     flex: 1,
-    marginTop: Layout.SV_50,
-
+    marginTop: Layout.SV_20,
     alignItems: 'center',
   },
   buttonSection: {
-    flex: 0.3,
+    flex: 0.5,
     borderRadius: Layout.SV_10,
-    backgroundColor: 'orange',
   },
 
   answerStyle: {
