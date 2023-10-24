@@ -1,8 +1,8 @@
 import {configureStore, combineReducers} from '@reduxjs/toolkit';
-import exerciseReducer from '../reducers/exerciseSlice';
+import surveyReducer from '../reducers/surveySlice';
 
 const rootReducer = combineReducers({
-  exercise: exerciseReducer,
+  survey: surveyReducer,
 });
 
 const store = configureStore({

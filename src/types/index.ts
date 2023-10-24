@@ -1,2 +1,1 @@
-export * from './exercise';
-export * from './case';
+export * from './survey';

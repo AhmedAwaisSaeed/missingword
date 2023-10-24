@@ -8,6 +8,7 @@ export default {
     FAILURE: '#FD7D8B',
     DISABLE: '#A1B5BF',
     DISABLETEXT: '#6F8898',
+    GREEN: '#77A98B',
 
     TRANSPARENT: 'rgba(255, 255, 255, 0)',
 
